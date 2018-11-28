@@ -1,12 +1,12 @@
 /**
- * Minimum test case for Dyninst issue:
+ * Minimum test case for Dyninst-9.3.2 issue:
  * https://github.com/dyninst/dyninst/issues/501
  *
  * wrong return value of funcC when compiled:  
-	gcc bug.cpp -o test
+	make error
  * error dissapear when compiled:
-	gcc bug.cpp -o test -DDEBUG
-
+	make fine
+ *
  * 26.11. 2018
  * Ondrej Vysocky
  * IT4Innovations national supercomputing center, Czech Republic

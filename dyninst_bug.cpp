@@ -2,15 +2,11 @@
  * Basic SBI application using Dyninst to inster printf(functionName) before 
  * each function call in the provided binary
  *
- * Purpose - provide minimum test case for Dyninst issue:
+ * Purpose - provide minimum test case for Dyninst-9.3.2 issue:
  * https://github.com/dyninst/dyninst/issues/501
  *
- * compilation:
-
-	g++ -g -Wall -std=c++11 -L/usr/local/lib -o dyninst_bug dyninst_bug.cpp \
-	-ldyninstAPI -I${DINST_HOME}/dyninstAPI/h/ -L${DINST_HOME}/build/dyninstAPI/ \
-	-I${DINST_HOME}/common/h/ -I${DINST_HOME}/build/common/h/ -I${DINST_HOME}/symtabAPI/h/ -I${DINST_HOME}/proccontrol/h/ -I${DINST_HOME}/instructionAPI/h/ -I${DINST_HOME}/dataflowAPI/h/
-
+ * use Makefile: make all, make run
+ *
  * 26.11. 2018
  * Ondrej Vysocky
  * IT4Innovations national supercomputing center, Czech Republic
