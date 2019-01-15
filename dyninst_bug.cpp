@@ -80,29 +80,37 @@ void instrumentFunctionsStart(BPatch_binaryEdit *appBin, BPatch_image *appImage)
 {
 	std::cerr << "<> Inserting instrumentation for following application functions\n";
 
-	std::vector<BPatch_function*> startFuncs; 
+	std::vector<BPatch_function*> printFunc; 
 	const char * regStartFunc = "printf";
 
-	appImage->findFunction(regStartFunc, startFuncs, true, true, true);
-	if (startFuncs.size() == 0)
+	appImage->findFunction(regStartFunc, printFunc, true, true, true);
+	if (printFunc.size() == 0)
 	{
 		std::cerr << "<> Could not find "<<regStartFunc<<" function\n";
 		return;
 	}
 	
+		
 	//Instrument functions from the list
 	for (auto funcName : funcList)
 	{
-
 		std::cout << "<>\t" << funcName << std::endl;
 
 		std::vector<BPatch_snippet*> startArgs;
-		BPatch_snippet* fmt1 = new BPatch_constExpr("func %s\n");
-		BPatch_snippet* fmt2 = new BPatch_constExpr(funcName.c_str());
-		startArgs.push_back(fmt1);
-		startArgs.push_back(fmt2);
+		std::vector<BPatch_snippet*> stopArgs;
+
+		BPatch_snippet* fmt1 = new BPatch_constExpr("START %s\n");
+		BPatch_snippet* fmt2 = new BPatch_constExpr("STOP  %s\n");
+		BPatch_snippet* fmt3 = new BPatch_constExpr(funcName.c_str());
 		
-		insertFunction<BPatch_binaryEdit>(appBin, appImage, startFuncs, startArgs, funcName.c_str(), BPatch_entry);
+		startArgs.push_back(fmt1);
+		startArgs.push_back(fmt3);
+
+		stopArgs.push_back(fmt2);
+		stopArgs.push_back(fmt3);
+		
+		insertFunction<BPatch_binaryEdit>(appBin, appImage, printFunc, startArgs, funcName.c_str(), BPatch_entry);
+		insertFunction<BPatch_binaryEdit>(appBin, appImage, printFunc, stopArgs, funcName.c_str(), BPatch_exit);		
 	}
 }
 
